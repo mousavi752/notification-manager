@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../node_modules/@prisma/db-notification"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  type      NotificationType
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+  sms       Sms?
+
+  @@map("notification")
+}
+
+model Sms {
+  id                 Int          @id @default(autoincrement())
+  receiver           String       @db.VarChar(64)
+  messages           String[]     @db.VarChar(256)
+  notification       Notification @relation(fields: [notificationId], references: [id])
+  notificationId     Int          @unique @map("notification_id")
+  status             SmsStatus
+  smsTemplateId      Int          @map("sms_template_id")
+  smsTemplate        SmsTemplate  @relation(fields: [smsTemplateId], references: [id])
+  providerTrackingId String?      @map("provider_tracking_id")
+  providerId         Int?
+  Provider           Provider?    @relation(fields: [providerId], references: [id])
+  createdAt          DateTime     @default(now()) @map("created_at")
+  updatedAt          DateTime     @updatedAt @map("updated_at")
+
+  @@map("sms")
+}
+
+model SmsTemplate {
+  id        Int             @id @default(autoincrement())
+  name      String          @db.VarChar(64)
+  key       String          @unique @db.VarChar(64)
+  message   String          @db.VarChar(256)
+  type      SmsTemplateType
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @updatedAt @map("updated_at")
+  smses     Sms[]
+
+  @@map("sms_template")
+}
+
+model Provider {
+  id          Int          @id @default(autoincrement())
+  type        ProviderType
+  name        String       @db.VarChar(64)
+  isActive    Boolean      @default(false) @map("is_active")
+  credentials Json
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  smses       Sms[]
+}
+
+enum NotificationType {
+  SMS
+  EMAIL
+}
+
+enum SmsStatus {
+  SENDING
+  SENT
+  NOT_SENT
+}
+
+enum SmsTemplateType {
+  TEXTUAL
+  PATTERN
+}
+
+enum ProviderType {
+  SMS
+  EMAIL
+}

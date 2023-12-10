@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -16,9 +14,7 @@
         "outputPath": "dist/apps/notification",
         "main": "apps/notification/src/main.ts",
         "tsConfig": "apps/notification/tsconfig.app.json",
-        "assets": [
-          "apps/notification/src/assets"
-        ],
+        "assets": [],
         "isolatedConfig": true,
         "webpackConfig": "apps/notification/webpack.config.js"
       },
@@ -44,20 +40,14 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/notification/**/*.ts"
-        ]
+        "lintFilePatterns": ["apps/notification/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/notification/jest.config.ts"
       }
