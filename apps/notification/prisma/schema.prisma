@@ -56,6 +56,7 @@ model Provider {
   id          Int          @id @default(autoincrement())
   type        ProviderType
   name        String       @db.VarChar(64)
+  key         String       @db.VarChar(64)
   isActive    Boolean      @default(false) @map("is_active")
   credentials Json
   createdAt   DateTime     @default(now()) @map("created_at")

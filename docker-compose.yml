@@ -11,6 +11,11 @@ services:
       - 'pgsql-db:/var/lib/postgresql/data'
     ports:
       - '64036:5432'
-
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '64057:6379'
 volumes:
   pgsql-db:
