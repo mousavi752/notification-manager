@@ -1,8 +1,20 @@
 export enum ProviderKey {
   KAVENEGAR = 'KAVENEGAR',
+  GMAIL = 'GMAIL',
 }
 
-export interface ISmsProvider {
+export type TEmailAdaptorSendInput = {
+  sender: string;
+  receiver: string;
+  subject: string;
+  message: string;
+};
+
+export interface IEmailAdaptor {
+  send(args: TEmailAdaptorSendInput): void;
+}
+
+export interface ISmsAdaptor {
   sendTextual(args: TSendSmsInput): Promise<TSmsProviderOutput>;
 
   sendPattern(args: TSendSmsByTemplateInput): Promise<TSmsProviderOutput>;
@@ -39,7 +51,7 @@ export type TSmsProviderServiceSendSmsInput = {
   receiver: string;
   message: string;
   providerDetails: any;
-  smsProvider: ISmsProvider;
+  smsProvider: ISmsAdaptor;
 };
 
 export type TSmsProviderServiceSendSmsByTemplateInput = {
@@ -47,7 +59,7 @@ export type TSmsProviderServiceSendSmsByTemplateInput = {
   message: string;
   providerDetails: any;
   template: string;
-  smsProvider: ISmsProvider;
+  smsProvider: ISmsAdaptor;
 };
 
 export type TSmsProviderServiceSelectSmsProvider = { key: string };

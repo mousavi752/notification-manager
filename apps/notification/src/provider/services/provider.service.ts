@@ -7,10 +7,19 @@ export class ProviderService {
   constructor(private readonly db: DatabaseService) {}
 
   async selectSmsProvider() {
-    return await this.db.provider.findFirst({
+    return await this.db.provider.findFirstOrThrow({
       where: {
         isActive: true,
         type: ProviderType.SMS,
+      },
+    });
+  }
+
+  async selectEmailProvider() {
+    return await this.db.provider.findFirstOrThrow({
+      where: {
+        isActive: true,
+        type: ProviderType.EMAIL,
       },
     });
   }

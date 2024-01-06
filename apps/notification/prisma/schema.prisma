@@ -17,6 +17,7 @@ model Notification {
   createdAt DateTime         @default(now()) @map("created_at")
   updatedAt DateTime         @updatedAt @map("updated_at")
   sms       Sms?
+  email     Email?
 
   @@map("notification")
 }
@@ -62,6 +63,22 @@ model Provider {
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @updatedAt @map("updated_at")
   smses       Sms[]
+  emails      Email[]
+}
+
+model Email {
+  id             Int          @id @default(autoincrement())
+  sender         String       @db.VarChar(256)
+  receiver       String       @db.VarChar(256)
+  subject        String       @db.VarChar(256)
+  message        String
+  status         EmailStatus  @default(SENDING)
+  notificationId Int          @unique
+  notification   Notification @relation(fields: [notificationId], references: [id])
+  providerId     Int?
+  provider       Provider?    @relation(fields: [providerId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 enum NotificationType {
@@ -83,4 +100,10 @@ enum SmsTemplateType {
 enum ProviderType {
   SMS
   EMAIL
+}
+
+enum EmailStatus {
+  SENT
+  NOT_SENT
+  SENDING
 }

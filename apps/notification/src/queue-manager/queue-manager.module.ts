@@ -6,6 +6,8 @@ import { DatabaseModule } from '../database/database.module';
 import { QueueManagerService } from './services/queue-manager.service';
 import { SmsModule } from '../sms/sms.module';
 import { SmsProcessor } from './processores/sms.processor';
+import { EmailProcessor } from './processores/email.processor';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
@@ -22,10 +24,14 @@ import { SmsProcessor } from './processores/sms.processor';
     BullModule.registerQueue({
       name: QueueName.SMS,
     }),
+    BullModule.registerQueue({
+      name: QueueName.EMAIL,
+    }),
     DatabaseModule,
     SmsModule,
+    EmailModule,
   ],
-  providers: [QueueManagerService, SmsProcessor],
+  providers: [QueueManagerService, SmsProcessor, EmailProcessor],
   exports: [QueueManagerService],
 })
 export class QueueManagerModule {}

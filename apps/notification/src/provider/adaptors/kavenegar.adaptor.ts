@@ -1,13 +1,12 @@
-import { Injectable } from '@nestjs/common';
 import {
-  ISmsProvider,
+  ISmsAdaptor,
   TSendSmsByTemplateInput,
   TSendSmsInput,
   TSmsProviderOutput,
 } from '../provider.type';
 import axios from 'axios';
 
-export class KavenegarAdaptor implements ISmsProvider {
+export class KavenegarAdaptor implements ISmsAdaptor {
   constructor(
     private readonly apiKey: string,
     private readonly sender: string

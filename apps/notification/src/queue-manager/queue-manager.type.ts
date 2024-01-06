@@ -11,6 +11,14 @@ export type TSmsTask = {
   smsId: number;
 };
 
+export type TEmailTask = {
+  sender: string;
+  receiver: string;
+  subject: string;
+  message: string;
+  emailId: number;
+};
+
 export type TCreateTaskInput = {
   notificationId: number;
   type: NotificationType;
