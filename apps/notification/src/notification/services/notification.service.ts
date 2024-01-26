@@ -7,16 +7,26 @@ import {
   TCreateSmsNotificationInput,
   TCreateSmsNotificationOutput,
 } from '../notification.type';
-import { Prisma } from '@prisma/db-notification';
 import { EmailService } from '../../email/services/email.service';
+import { DatabaseService } from '../../database/services/database.service';
 
 @Injectable()
 export class NotificationService {
   constructor(
     private readonly smsService: SmsService,
     private readonly emailService: EmailService,
-    private readonly queueManagerService: QueueManagerService
+    private readonly queueManagerService: QueueManagerService,
+    private readonly db: DatabaseService
   ) {}
+
+  async getNotifications() {
+    return this.db.notification.findMany({
+      include: {
+        sms: true,
+        email: true,
+      },
+    });
+  }
 
   async createSmsNotification(
     args: TCreateSmsNotificationInput
