@@ -9,6 +9,7 @@ import {
 } from '../notification.type';
 import { EmailService } from '../../email/services/email.service';
 import { DatabaseService } from '../../database/services/database.service';
+import { Prisma } from '@prisma/db-notification';
 
 @Injectable()
 export class NotificationService {
@@ -19,11 +20,15 @@ export class NotificationService {
     private readonly db: DatabaseService
   ) {}
 
-  async getNotifications() {
+  async getNotifications(where?: Prisma.NotificationWhereInput) {
     return this.db.notification.findMany({
+      where,
       include: {
-        sms: true,
+        sms: { include: { smsTemplate: true } },
         email: true,
+      },
+      orderBy: {
+        id: 'desc',
       },
     });
   }

@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Injectable, Post } from '@nestjs/common';
+import { Body, Controller, Get, Injectable, Post, Query } from '@nestjs/common';
 import { NotificationService } from '../services/notification.service';
 import { SendSmsDto } from '../dto/send-sms.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SendEmailDto } from '../dto/send-email.dto';
+import { GetNotificationDto } from '../dto/get-notification.dto';
 
 @Injectable()
 @Controller('notification')
@@ -20,8 +21,8 @@ export class NotificationController {
   }
 
   @Get('notification')
-  async getSms() {
-    return this.notificationService.getNotifications();
+  async getSms(@Query() filterObj: GetNotificationDto) {
+    return this.notificationService.getNotifications(filterObj);
   }
 
   @Post('email')
