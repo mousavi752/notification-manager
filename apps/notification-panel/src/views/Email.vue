@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SidebarVue from '../app/Sidebar.vue';
+import EmailTableReport from '../app/EmailTableReport.vue';
 
 </script>
 
@@ -13,6 +14,7 @@ import SidebarVue from '../app/Sidebar.vue';
                         <SidebarVue />
                     </v-col>
                     <v-col cols="8">
+                    <EmailTableReport />
                     </v-col>
                 </v-row>
             </v-container>
