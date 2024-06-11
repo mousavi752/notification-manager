@@ -1,6 +1,35 @@
 version: '3.7'
 
 services:
+  notification:
+    build:
+      context: .
+      dockerfile: apps/notification/Dockerfile
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./apps/notification/prisma:/app/prisma
+    env_file:
+      - '.env.example'
+    depends_on:
+      - postgresql-db
+      - redis
+
+  notification-panel:
+    build:
+      context: .
+      dockerfile: apps/notification-panel/Dockerfile
+    environment:
+      - HOST=0.0.0.0
+      - PORT=80
+    ports:
+      - '8081:80'
+    depends_on:
+      - notification
+
   postgresql-db:
     image: postgres:13
     environment:
